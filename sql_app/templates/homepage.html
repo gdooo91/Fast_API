@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+
+{% block title %} 
+  <title>Projects List</title>
+{% endblock %} 
+
+{% block content %} 
+  <div class="container">
+    <h1 class="display-4">Loading Projects ...</h1>
+  </div>
+  <div class = "container">
+    {% for item in projects %}
+    <div class="row justify-content-start">
+      <div class="col">
+        {{item.project_name}} 
+      </div>
+      <div class="col">
+        {{item.parts_orderd}} 
+      </div>
+      <div class="col">
+        {{item.ship_date}} 
+      </div>
+      <div class="col">
+        <form action="/projects/{{item.project_name}}" method="post">
+          <input id="editProject" type="submit" name="editProject" value="Edit">
+        </form>
+      </div>
+    </div>
+      {% endfor %}
+
+
+
+  </div>
+
+{% endblock %} 

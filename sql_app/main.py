@@ -1,16 +1,22 @@
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, APIRouter, Request
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 
-models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+# from core.config import settings
+# from sql_app.apis.general_pages.route_homepage import general_pages_router
+from fastapi.templating import Jinja2Templates
 
+# models.Base.metadata.create_all(bind=engine)
+
+templates = Jinja2Templates(directory="sql_app/templates")
+general_pages_router = APIRouter()
 
 # Dependency
 def get_db():
+    # TODO: Use python-dotenv to save the database info. (Like .env in JS)
     db = SessionLocal()
     try:
         yield db
@@ -20,7 +26,32 @@ def get_db():
 
 #START APP: uvicorn sql_app.main:app --reload
 
+
+def include_router(app):
+	app.include_router(general_pages_router)
+
+
+def start_application():
+	# app = FastAPI(title=settings.PROJECT_NAME,version=settings.PROJECT_VERSION)
+	app = FastAPI(title="Projects Display",version="V0.1")
+	include_router(app)
+	return app 
+
+app = FastAPI()
+#app = start_application()
+
 # PROJECT FUNTIONS 
+
+
+@app.get("/", response_model=list[schemas.Project_read])
+def read_projects(request: Request ,db: Session = Depends(get_db)):
+    # retrun the last/first 10 Projects 
+    # TODO: Test if this is looking for the last or first. 
+    users = crud.get_projects(db, skip=0, limit=10)
+    return templates.TemplateResponse("homepage.html",{"request":request, "projects": users})
+    # return users
+    # return templates.TemplateResponse("homepage.html",{"projects": users})
+
 
 @app.post("/projects/", response_model=schemas.Project)
 def create_project(project: schemas.Project, db: Session = Depends(get_db)):
