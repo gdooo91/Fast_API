@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+
+{% block title %} 
+  <title>Projects List</title>
+{% endblock %} 
+
+{% block content %} 
+  <div class="container">
+    <h1 class="display-4">Loading Projects ...</h1>
+  </div>
+  <div class = "container">
+    <tr>
+      <h2>{{project.project_name}}</h2>
+    </tr>
+    <tr>
+      {% if project.paid == True %}
+      <h3>parts have been ordered, Project ships in {{project.ship_date}}</h3>
+      {% endif %}
+      {% if project.paid != True %}
+      <h3>parts: Not Ordered yet, Not paid</h3>
+      {% endif %}
+    </tr>
+    <tr>
+      <h4> Install Date: {{project.install_date}} </h4>
+      <!-- project_name : str
+      parts_orderd : bool
+      start_build : bool
+      ship_date : str
+      install_date -->
+      <!-- <h3>"Display Project info. "</h3> -->
+    </tr>
+  </div>
+{% endblock %} 

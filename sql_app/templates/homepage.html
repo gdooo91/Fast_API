@@ -22,7 +22,8 @@
         {{item.ship_date}} 
       </div>
       <div class="col">
-        <form action="/projects/{{item.project_name}}" method="post">
+        <!-- <form action="/projects/{{item.project_name}}" method="post"> -->
+        <form action="/projects/{{item.project_name}}" method="get">
           <input id="editProject" type="submit" name="editProject" value="Edit">
         </form>
       </div>

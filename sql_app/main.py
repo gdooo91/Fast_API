@@ -65,6 +65,15 @@ def read_project(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
     users = crud.get_projects(db, skip=skip, limit=limit)
     return users
 
+@app.get("/projects/{name}", response_model=schemas.Project_read)
+def get_project_using_name(
+    request: Request, name: str, db: Session = Depends(get_db)
+):
+    # return crud.get_project_by_name(db=db, project_name=name)
+    project = crud.get_project_by_name(db=db, project_name=name)
+    return templates.TemplateResponse("projectInfo.html",{"request":request, "project": project })
+    
+
 ##
 
 # @app.post("/users/", response_model=schemas.User)
