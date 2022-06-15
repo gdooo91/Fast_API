@@ -115,20 +115,21 @@ async def create_project(
     else:
         new_project.start_build = True
     
-
-    # proj = schemas.Project(new_project)
-    return("HHHHH")
-    return ( str(form.items()) + " " +
-        str(new_project.project_name) +  " " +  
-        str(new_project.paid) +  " "+ 
-        str(new_project.parts_orderd) +  " " + 
-        str(new_project.start_build) +  " " + 
-        str(new_project.ship_date) +  " " + 
-        str(new_project.install_date) +  " "
-        )
-    return crud.create_project(db = db, project = new_project)
-
-##
+    project = schemas.Project(
+        project_name = new_project.project_name,
+        paid = new_project.paid,
+        parts_orderd = new_project.parts_orderd,
+        start_build = new_project.start_build,
+        ship_date = new_project.ship_date,
+        install_date = new_project.install_date
+    )
+    try:
+        crud.create_project(db = db, project = project)
+        users = crud.get_projects(db, skip=0, limit=10)
+        return templates.TemplateResponse("homepage.html",{"request":request, "projects": users})
+    except:
+        raise HTTPException(status_code = 400, detail = "DataBase is down!")
+    
 
 # @app.post("/users/", response_model=schemas.User)
 # def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
