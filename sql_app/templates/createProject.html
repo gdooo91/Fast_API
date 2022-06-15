@@ -14,16 +14,7 @@
         {% endfor %}
       </div>
     </div>
-  <!-- 
-    id = Column(Integer, primary_key=True)
-    [X] project_name = Column(String)
-    [X] paid = Column(Boolean)
-    [X] parts_orderd = Column(Boolean)
-    [X] start_build = Column(Boolean)
-    [X] ship_date = Column(String)
-    [X] install_date = Column(String)
 
-  -->
     <div class="row my-5">
       <h3 class="text-center display-4">Create Project</h3>
       <form method="post">  <!--  action="create" -->
@@ -31,15 +22,15 @@
           <input type="text" required class="form-control" name="project_name" value="{{project_name}}" placeholder="Project Name here">
         </div>
         <div class="mb-3">
-          <input type="checkbox" id="paid_chkbox" name="Paid" value="{{paid}}">
+          <input type="checkbox" name="Paid" value="{{paid}}">
           <label for="paid_chkbox"> Paid Project</label><br>
         </div>
         <div class="mb-3">
-          <input type="checkbox" id="partsOrderd_chkbox" name="parts_orderd" value="{{parts_orderd}}">
+          <input type="checkbox" name="parts_orderd" value="{{parts_orderd}}">
           <label for="partsOrderd_chkbox"> Parts orderd</label><br>
         </div>
         <div class="mb-3">
-          <input type="checkbox" id="buildStart_chkbox" name="start_build" value="{{start_build}}">
+          <input type="checkbox" name="start_build" value="{{start_build}}">
           <label for="buildStart_chkbox"> Build Started</label><br>
         </div>
         <div class="mb-3">
@@ -52,7 +43,6 @@
           <label for="exampleFormControlTextarea1" class="form-label">Description</label>
           <textarea class="form-control" required name="description" id="exampleFormControlTextarea1" rows="3">{{description}}</textarea>
           <div id="help" class="form-text">Please provide complete Job description,requirements,perks and benefits.</div>
-
         </div> -->
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>

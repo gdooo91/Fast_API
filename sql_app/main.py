@@ -1,4 +1,3 @@
-import re
 from fastapi import Depends, FastAPI, HTTPException, APIRouter, Request
 from sqlalchemy.orm import Session
 
@@ -83,16 +82,51 @@ def get_project_create_page(
 @app.post("/createproject")
 async def create_project(
     request: Request,
-    project: schemas.Project,
+    # new_project: schemas.Project,
     db: Session = Depends(get_db)
     ):
-    # db_project = crud.get_project_by_name(db, project_name = project.project_name)
-    # if db_project:
-    #     raise HTTPException(status_code = 400, detail = "Project already Made!")
-    # new_project = crud.create_project()
+    form = await request.form()
+    # new_project  = models.Project() 
+    # new_project(**dict(form.items))
+    new_project = models.Project()
+    new_project.project_name =  form.get("project_name")
+    new_project.paid =  form.get("paid")
+    new_project.parts_orderd =  form.get("parts_orderd")
+    new_project.start_build =  form.get("start_build")
+    new_project.ship_date =  form.get("ship_date")
+    new_project.install_date =  form.get("install_date")
 
-    return (str(request.keys))
-    # return crud.create_project(db = db, project = project)
+    db_project = crud.get_project_by_name(db, project_name = new_project.project_name)
+    if db_project:
+        raise HTTPException(status_code = 400, detail = "Project Exist!")
+
+    if new_project.paid == None:
+        new_project.paid = False
+    else:
+        new_project.paid = True
+    
+    if new_project.parts_orderd == None:
+        new_project.parts_orderd = False
+    else:
+        new_project.parts_orderd = True
+
+    if new_project.start_build == None:
+        new_project.start_build = False
+    else:
+        new_project.start_build = True
+    
+
+    # proj = schemas.Project(new_project)
+    return("HHHHH")
+    return ( str(form.items()) + " " +
+        str(new_project.project_name) +  " " +  
+        str(new_project.paid) +  " "+ 
+        str(new_project.parts_orderd) +  " " + 
+        str(new_project.start_build) +  " " + 
+        str(new_project.ship_date) +  " " + 
+        str(new_project.install_date) +  " "
+        )
+    return crud.create_project(db = db, project = new_project)
 
 ##
 
