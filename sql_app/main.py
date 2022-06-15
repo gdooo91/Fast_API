@@ -1,3 +1,4 @@
+import re
 from fastapi import Depends, FastAPI, HTTPException, APIRouter, Request
 from sqlalchemy.orm import Session
 
@@ -72,7 +73,26 @@ def get_project_using_name(
     # return crud.get_project_by_name(db=db, project_name=name)
     project = crud.get_project_by_name(db=db, project_name=name)
     return templates.TemplateResponse("projectInfo.html",{"request":request, "project": project })
+
+@app.get("/createproject")
+def get_project_create_page(
+    request: Request
+):
+    return templates.TemplateResponse("createproject.html",{"request":request})
     
+@app.post("/createproject")
+async def create_project(
+    request: Request,
+    project: schemas.Project,
+    db: Session = Depends(get_db)
+    ):
+    # db_project = crud.get_project_by_name(db, project_name = project.project_name)
+    # if db_project:
+    #     raise HTTPException(status_code = 400, detail = "Project already Made!")
+    # new_project = crud.create_project()
+
+    return (str(request.keys))
+    # return crud.create_project(db = db, project = project)
 
 ##
 

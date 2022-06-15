@@ -7,10 +7,17 @@
 
 {% block content %} 
   <div class="container">
-    <h1 class="display-4">Loading Projects ...</h1>
+    <h1 class="display-4">Projects List</h1>
   </div>
   <div class = "container">
-    {% for item in projects %}
+    <div class="list-group">
+      {% for item in projects %}
+      <a href="/projects/{{item.project_name}}" class="list-group-item list-group-item-action list-group-item-primary center">
+        {{item.project_name}} &emsp; {{item.parts_orderd}} &emsp; {{item.ship_date}}
+      </a>
+      {% endfor %}
+    </div>
+    <!-- {% for item in projects %}
     <div class="row justify-content-start">
       <div class="col">
         {{item.project_name}} 
@@ -22,13 +29,12 @@
         {{item.ship_date}} 
       </div>
       <div class="col">
-        <!-- <form action="/projects/{{item.project_name}}" method="post"> -->
         <form action="/projects/{{item.project_name}}" method="get">
           <input id="editProject" type="submit" name="editProject" value="Edit">
         </form>
       </div>
     </div>
-      {% endfor %}
+      {% endfor %} -->
 
 
 
