@@ -11,6 +11,9 @@
   </div>
   <div class = "container">
     <div class="list-group">
+      <a class="list-group-item center"> 
+        Project Name |&emsp; Payment received |&emsp; Project Due Date
+      </a>
       {% for item in projects %}
       <a href="/projects/{{item.project_name}}" class="list-group-item list-group-item-action list-group-item-primary center">
         {{item.project_name}} &emsp; {{item.parts_orderd}} &emsp; {{item.ship_date}}
