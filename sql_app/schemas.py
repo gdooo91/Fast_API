@@ -51,3 +51,37 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
+
+class AProjects(BaseModel):
+    projectid : int
+    companyid : int
+    contactid : float
+    shiptoenduser : bool
+    enduser : int
+    endusecontactid : float
+    employeeid : int
+    purchaseordernumber : str
+    saleid : float
+    projecttotalbillingestimate : float
+    projectname : str
+    projecttypeid : int
+    projectmodel : str
+    projectdescription : str
+    numberofaxis : float
+    projectscanning : bool
+    projectscanwidth : str
+    projectserialnumber : str
+    projectbegindate : str
+    projectenddate : str
+    projectduedate : str
+    probeorderdate : str
+    partsorderdate : str
+    projectshipdate : str
+    projectinstalldate : str
+    projectclosed : bool
+    projectstatus : str
+    hand : str
+    valvemodel : str
+    touchscreen : str
+    numberofprobes : float
+    projectreference : str

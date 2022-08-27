@@ -4,12 +4,13 @@ from sqlalchemy.orm import Session
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 
+#START APP: uvicorn sql_app.main:app --reload
 
 # from core.config import settings
 # from sql_app.apis.general_pages.route_homepage import general_pages_router
 from fastapi.templating import Jinja2Templates
 
-# models.Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind=engine)
 
 templates = Jinja2Templates(directory="sql_app/templates")
 general_pages_router = APIRouter()
@@ -24,8 +25,6 @@ def get_db():
         db.close()
 
 
-#START APP: uvicorn sql_app.main:app --reload
-
 
 def include_router(app):
 	app.include_router(general_pages_router)
@@ -37,8 +36,8 @@ def start_application():
 	include_router(app)
 	return app 
 
-app = FastAPI()
-#app = start_application()
+#app = FastAPI()
+app = start_application()
 
 # PROJECT FUNTIONS 
 
@@ -60,10 +59,27 @@ def create_project(project: schemas.Project, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Project already Made!")
     return crud.create_project(db=db, project=project)
 
-@app.get("/projects/", response_model=list[schemas.Project_read])
-def read_project(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = crud.get_projects(db, skip=skip, limit=limit)
-    return users
+# incorprated to the home page.
+# @app.get("/projects/", response_model=list[schemas.Project_read])
+# def read_project(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+#     users = crud.get_projects(db, skip=skip, limit=limit)
+#     return users
+
+@app.get("/Aprojects/") #, response_model=schemas.AProjects)
+def get_Access_Projects(request: Request, db: Session = Depends(get_db)):
+    Aprojects = crud.get_Aproject(db=db)
+    projects = list()
+
+    for Aproj in Aprojects:
+        proj = schemas.Project(project_name=str(Aproj.projectname), \
+            paid= True, \
+            parts_orderd= False, \
+            start_build= False, \
+            ship_date= str(Aproj.partsorderdate), \
+            install_date=str(Aproj.partsorderdate))
+        projects.append(proj)
+    
+    return templates.TemplateResponse("homepage.html",{"request":request, "projects": projects})
 
 @app.get("/projects/{name}", response_model=schemas.Project_read)
 def get_project_using_name(
